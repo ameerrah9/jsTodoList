@@ -28,11 +28,21 @@ class List extends React.Component {
             todos
         })
     }
+
+    addTodo = todo => {
+        todo.id = Math.random();
+        let todos = [...this.state.todos, todo];
+        this.setState({
+            todos
+        })
+    }
+
     render() {
         return(
             <div className="List">
                 <h1 className="center blue-text">Todo's</h1>
                 <Todos todos={this.state.todos} deleteTodo={this.deleteTodo} />
+                <AddTodo addTodo={this.addTodo} />
             </div>
         );
     }
@@ -59,6 +69,40 @@ const Todos = ({ todos, deleteTodo }) => {
             {todoList}
         </div>
     )
+}
+
+// ===================================================
+
+class AddTodo extends React.Component {
+
+    state = {
+        content: ''
+    }
+
+    handleChange = evt => {
+        this.setState({
+            content: evt.target.value
+        })
+    }
+
+    handleSubmit = evt => {
+        evt.preventDefault();
+        this.props.addTodo(this.state);
+        this.setState({
+            content: ''
+        })
+    }
+
+    render() {
+        return (
+            <div>
+                <form onSubmit={this.handleSubmit}>
+                    <input type="text" onChange={this.handleChange} value={this.state.content} />
+                    <button type="submit">Add New Todo</button>
+                </form>
+            </div>
+        )
+    }
 }
 
 // ===================================================
